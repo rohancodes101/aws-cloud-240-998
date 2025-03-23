@@ -1,0 +1,3123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Number Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .question {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .question.clicked {
+            background-color: #4CAF50; /* Green when clicked */
+            color: white;
+        }
+
+        .clear-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" id="questionGrid"></div>
+    <button class="clear-btn" id="clearButton">Clear All</button>
+
+    <script>
+        const data = [
+    {
+        "question_number": 241,
+        "link": "https://www.examtopics.com/discussions/amazon/view/127485-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 242,
+        "link": "https://www.examtopics.com/discussions/amazon/view/130359-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 243,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129470-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 244,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87355-exam-aws-certified-cloud-practitioner-topic-1-question-244/"
+    },
+    {
+        "question_number": 245,
+        "link": "https://www.examtopics.com/discussions/amazon/view/56378-exam-aws-certified-cloud-practitioner-topic-1-question-245/"
+    },
+    {
+        "question_number": 246,
+        "link": "https://www.examtopics.com/discussions/amazon/view/126280-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 247,
+        "link": "https://www.examtopics.com/discussions/amazon/view/133860-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 248,
+        "link": "https://www.examtopics.com/discussions/amazon/view/80880-exam-aws-certified-database-specialty-topic-1-question-248/"
+    },
+    {
+        "question_number": 249,
+        "link": "https://www.examtopics.com/discussions/amazon/view/126208-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 250,
+        "link": "https://www.examtopics.com/discussions/amazon/view/127842-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 252,
+        "link": "https://www.examtopics.com/discussions/amazon/view/126059-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 253,
+        "link": "https://www.examtopics.com/discussions/amazon/view/47676-exam-aws-certified-cloud-practitioner-topic-1-question-253/"
+    },
+    {
+        "question_number": 254,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129604-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 255,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129660-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 256,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129593-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 257,
+        "link": "https://www.actual4test.com/discussions/Amazon/exam-aws-certified-cloud-practitioner-topic-1-question-257-discussion-p1048233.html"
+    },
+    {
+        "question_number": 258,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129640-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 259,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129613-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 260,
+        "link": "https://www.examtopics.com/discussions/amazon/view/61710-exam-aws-certified-cloud-practitioner-topic-1-question-260/"
+    },
+    {
+        "question_number": 261,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129615-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 262,
+        "link": "https://www.examtopics.com/discussions/amazon/view/74464-exam-aws-certified-cloud-practitioner-topic-1-question-262/"
+    },
+    {
+        "question_number": 263,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129695-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 264,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129560-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 265,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129618-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 266,
+        "link": "https://www.examtopics.com/discussions/amazon/view/86718-exam-aws-certified-cloud-practitioner-topic-1-question-266/"
+    },
+    {
+        "question_number": 267,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129620-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 268,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129621-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 269,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87611-exam-aws-certified-cloud-practitioner-topic-1-question-269/"
+    },
+    {
+        "question_number": 270,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129622-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 271,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129642-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 272,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129822-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 273,
+        "link": "https://www.examtopics.com/discussions/amazon/view/69280-exam-aws-certified-cloud-practitioner-topic-1-question-273/"
+    },
+    {
+        "question_number": 274,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129626-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 275,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129627-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 276,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129628-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 277,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129629-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 278,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129646-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 279,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87257-exam-aws-certified-cloud-practitioner-topic-1-question-279/"
+    },
+    {
+        "question_number": 280,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129662-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 281,
+        "link": "https://www.examtopics.com/discussions/amazon/view/131699-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 282,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129664-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 283,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129962-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 284,
+        "link": "https://www.examtopics.com/discussions/amazon/view/29296-exam-aws-certified-cloud-practitioner-topic-1-question-284/"
+    },
+    {
+        "question_number": 285,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129632-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 286,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90747-exam-aws-certified-cloud-practitioner-topic-1-question-286/"
+    },
+    {
+        "question_number": 287,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96172-exam-aws-certified-cloud-practitioner-topic-1-question-287/"
+    },
+    {
+        "question_number": 288,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129566-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 289,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129653-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 290,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129903-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 291,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129654-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 292,
+        "link": "https://www.examtopics.com/discussions/amazon/view/86238-exam-aws-certified-cloud-practitioner-topic-1-question-292/"
+    },
+    {
+        "question_number": 293,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129648-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 294,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87613-exam-aws-certified-cloud-practitioner-topic-1-question-294/"
+    },
+    {
+        "question_number": 295,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129655-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 296,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129650-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 297,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129651-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 298,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129904-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 299,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129969-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 300,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129905-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 301,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87769-exam-aws-certified-cloud-practitioner-topic-1-question-301/"
+    },
+    {
+        "question_number": 302,
+        "link": "https://www.examtopics.com/discussions/amazon/view/130557-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 303,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129742-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 304,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129743-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 305,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129748-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 306,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87772-exam-aws-certified-cloud-practitioner-topic-1-question-306/"
+    },
+    {
+        "question_number": 307,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129763-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 308,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129765-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 309,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129767-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 310,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88169-exam-aws-certified-cloud-practitioner-topic-1-question-310/"
+    },
+    {
+        "question_number": 311,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88170-exam-aws-certified-cloud-practitioner-topic-1-question-311/"
+    },
+    {
+        "question_number": 312,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93051-exam-aws-certified-cloud-practitioner-topic-1-question-312/"
+    },
+    {
+        "question_number": 313,
+        "link": "https://www.examtopics.com/discussions/amazon/view/89269-exam-aws-certified-cloud-practitioner-topic-1-question-313/"
+    },
+    {
+        "question_number": 314,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129764-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 315,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87500-exam-aws-certified-cloud-practitioner-topic-1-question-315/"
+    },
+    {
+        "question_number": 316,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96252-exam-aws-certified-cloud-practitioner-topic-1-question-316/"
+    },
+    {
+        "question_number": 317,
+        "link": "https://www.examtopics.com/discussions/amazon/view/89575-exam-aws-certified-cloud-practitioner-topic-1-question-317/"
+    },
+    {
+        "question_number": 318,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129766-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 319,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129768-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 320,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129770-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 321,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129771-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 322,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87628-exam-aws-certified-cloud-practitioner-topic-1-question-322/"
+    },
+    {
+        "question_number": 323,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87941-exam-aws-certified-cloud-practitioner-topic-1-question-323/"
+    },
+    {
+        "question_number": 324,
+        "link": "https://www.examtopics.com/discussions/amazon/view/89577-exam-aws-certified-cloud-practitioner-topic-1-question-324/"
+    },
+    {
+        "question_number": 325,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129892-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 326,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88171-exam-aws-certified-cloud-practitioner-topic-1-question-326/"
+    },
+    {
+        "question_number": 327,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96371-exam-aws-certified-cloud-practitioner-topic-1-question-327/"
+    },
+    {
+        "question_number": 328,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88172-exam-aws-certified-cloud-practitioner-topic-1-question-328/"
+    },
+    {
+        "question_number": 329,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129995-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 330,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129779-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 331,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93117-exam-aws-certified-cloud-practitioner-topic-1-question-331/"
+    },
+    {
+        "question_number": 332,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87872-exam-aws-certified-cloud-practitioner-topic-1-question-332/"
+    },
+    {
+        "question_number": 333,
+        "link": "https://www.examtopics.com/discussions/amazon/view/127219-exam-aws-certified-database-specialty-topic-1-question-333/"
+    },
+    {
+        "question_number": 334,
+        "link": "https://www.examtopics.com/discussions/amazon/view/91701-exam-aws-certified-cloud-practitioner-topic-1-question-334/"
+    },
+    {
+        "question_number": 335,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96522-exam-aws-certified-cloud-practitioner-topic-1-question-335/"
+    },
+    {
+        "question_number": 336,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129898-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 337,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129812-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 338,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87562-exam-aws-certified-cloud-practitioner-topic-1-question-338/"
+    },
+    {
+        "question_number": 339,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87635-exam-aws-certified-cloud-practitioner-topic-1-question-339/"
+    },
+    {
+        "question_number": 340,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129816-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 341,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88507-exam-aws-certified-cloud-practitioner-topic-1-question-341/"
+    },
+    {
+        "question_number": 342,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87802-exam-aws-certified-cloud-practitioner-topic-1-question-342/"
+    },
+    {
+        "question_number": 343,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96377-exam-aws-certified-cloud-practitioner-topic-1-question-343/"
+    },
+    {
+        "question_number": 344,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129821-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 345,
+        "link": "https://www.examtopics.com/discussions/amazon/view/130754-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 346,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87563-exam-aws-certified-cloud-practitioner-topic-1-question-346/"
+    },
+    {
+        "question_number": 347,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129577-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 348,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129576-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 349,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96531-exam-aws-certified-cloud-practitioner-topic-1-question-349/"
+    },
+    {
+        "question_number": 350,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129575-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 351,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87638-exam-aws-certified-cloud-practitioner-topic-1-question-351/"
+    },
+    {
+        "question_number": 352,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87564-exam-aws-certified-cloud-practitioner-topic-1-question-352/"
+    },
+    {
+        "question_number": 353,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129572-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 354,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96534-exam-aws-certified-cloud-practitioner-topic-1-question-354/"
+    },
+    {
+        "question_number": 355,
+        "link": "https://www.examtopics.com/discussions/amazon/view/131193-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 356,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129657-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 357,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96535-exam-aws-certified-cloud-practitioner-topic-1-question-357/"
+    },
+    {
+        "question_number": 358,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96536-exam-aws-certified-cloud-practitioner-topic-1-question-358/"
+    },
+    {
+        "question_number": 359,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96384-exam-aws-certified-cloud-practitioner-topic-1-question-359/"
+    },
+    {
+        "question_number": 360,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129570-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 361,
+        "link": "https://www.examtopics.com/discussions/amazon/view/130755-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 362,
+        "link": "https://www.examtopics.com/discussions/amazon/view/130756-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 363,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129786-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 364,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129787-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 365,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129888-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 366,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129889-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 367,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96542-exam-aws-certified-cloud-practitioner-topic-1-question-367/"
+    },
+    {
+        "question_number": 368,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129890-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 369,
+        "link": "https://www.examtopics.com/discussions/amazon/view/131206-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 370,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88514-exam-aws-certified-cloud-practitioner-topic-1-question-370/"
+    },
+    {
+        "question_number": 371,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129789-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 372,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129790-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 373,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87643-exam-aws-certified-cloud-practitioner-topic-1-question-373/"
+    },
+    {
+        "question_number": 374,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129792-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 375,
+        "link": "https://www.examtopics.com/discussions/amazon/view/129793-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 376,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96386-exam-aws-certified-cloud-practitioner-topic-1-question-376/"
+    },
+    {
+        "question_number": 377,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87644-exam-aws-certified-cloud-practitioner-topic-1-question-377/"
+    },
+    {
+        "question_number": 378,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96553-exam-aws-certified-cloud-practitioner-topic-1-question-378/"
+    },
+    {
+        "question_number": 379,
+        "link": "https://www.examtopics.com/discussions/amazon/view/137917-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 380,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90934-exam-aws-certified-cloud-practitioner-topic-1-question-380/"
+    },
+    {
+        "question_number": 381,
+        "link": "https://www.examtopics.com/discussions/amazon/view/137919-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 382,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88519-exam-aws-certified-cloud-practitioner-topic-1-question-382/"
+    },
+    {
+        "question_number": 383,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87545-exam-aws-certified-cloud-practitioner-topic-1-question-383/"
+    },
+    {
+        "question_number": 384,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87645-exam-aws-certified-cloud-practitioner-topic-1-question-384/"
+    },
+    {
+        "question_number": 385,
+        "link": "https://www.examtopics.com/discussions/amazon/view/139884-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 386,
+        "link": "https://www.examtopics.com/discussions/amazon/view/138027-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 387,
+        "link": "https://www.examtopics.com/discussions/amazon/view/138028-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 388,
+        "link": "https://www.examtopics.com/discussions/amazon/view/138046-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 389,
+        "link": "https://www.examtopics.com/discussions/amazon/360/"
+    },
+    {
+        "question_number": 390,
+        "link": "https://www.examtopics.com/discussions/amazon/view/92393-exam-aws-certified-cloud-practitioner-topic-1-question-390/"
+    },
+    {
+        "question_number": 391,
+        "link": "https://www.examtopics.com/discussions/amazon/view/138561-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 392,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87577-exam-aws-certified-cloud-practitioner-topic-1-question-392/"
+    },
+    {
+        "question_number": 393,
+        "link": "https://www.examtopics.com/discussions/amazon/view/137985-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 394,
+        "link": "https://www.examtopics.com/discussions/amazon/view/137984-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 395,
+        "link": "https://www.examtopics.com/discussions/amazon/view/137978-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 396,
+        "link": "https://www.examtopics.com/discussions/amazon/view/140118-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 397,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87636-exam-aws-certified-cloud-practitioner-topic-1-question-397/"
+    },
+    {
+        "question_number": 398,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96558-exam-aws-certified-cloud-practitioner-topic-1-question-398/"
+    },
+    {
+        "question_number": 400,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96559-exam-aws-certified-cloud-practitioner-topic-1-question-400/"
+    },
+    {
+        "question_number": 401,
+        "link": "https://www.examtopics.com/discussions/amazon/view/137986-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 402,
+        "link": "https://www.examtopics.com/discussions/amazon/view/140726-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 403,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87571-exam-aws-certified-cloud-practitioner-topic-1-question-403/"
+    },
+    {
+        "question_number": 404,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87578-exam-aws-certified-cloud-practitioner-topic-1-question-404/"
+    },
+    {
+        "question_number": 405,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87549-exam-aws-certified-cloud-practitioner-topic-1-question-405/"
+    },
+    {
+        "question_number": 406,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87579-exam-aws-certified-cloud-practitioner-topic-1-question-406/"
+    },
+    {
+        "question_number": 407,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87923-exam-aws-certified-cloud-practitioner-topic-1-question-407/"
+    },
+    {
+        "question_number": 408,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87924-exam-aws-certified-cloud-practitioner-topic-1-question-408/"
+    },
+    {
+        "question_number": 409,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87715-exam-aws-certified-cloud-practitioner-topic-1-question-409/"
+    },
+    {
+        "question_number": 410,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87716-exam-aws-certified-cloud-practitioner-topic-1-question-410/"
+    },
+    {
+        "question_number": 411,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87925-exam-aws-certified-cloud-practitioner-topic-1-question-411/"
+    },
+    {
+        "question_number": 412,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88964-exam-aws-certified-cloud-practitioner-topic-1-question-412/"
+    },
+    {
+        "question_number": 413,
+        "link": "https://www.examtopics.com/discussions/amazon/view/142699-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 414,
+        "link": "https://www.examtopics.com/discussions/amazon/view/142946-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 415,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87823-exam-aws-certified-cloud-practitioner-topic-1-question-415/"
+    },
+    {
+        "question_number": 416,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87936-exam-aws-certified-cloud-practitioner-topic-1-question-416/"
+    },
+    {
+        "question_number": 417,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87662-exam-aws-certified-cloud-practitioner-topic-1-question-417/"
+    },
+    {
+        "question_number": 418,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96566-exam-aws-certified-cloud-practitioner-topic-1-question-418/"
+    },
+    {
+        "question_number": 419,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87859-exam-aws-certified-cloud-practitioner-topic-1-question-419/"
+    },
+    {
+        "question_number": 420,
+        "link": "https://www.examtopics.com/discussions/amazon/view/141201-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 421,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87717-exam-aws-certified-cloud-practitioner-topic-1-question-421/"
+    },
+    {
+        "question_number": 422,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96236-exam-aws-certified-developer-associate-topic-1-question-422/"
+    },
+    {
+        "question_number": 423,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88272-exam-aws-certified-cloud-practitioner-topic-1-question-423/"
+    },
+    {
+        "question_number": 424,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87861-exam-aws-certified-cloud-practitioner-topic-1-question-424/"
+    },
+    {
+        "question_number": 425,
+        "link": "https://www.examtopics.com/discussions/amazon/view/140727-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 426,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87719-exam-aws-certified-cloud-practitioner-topic-1-question-426/"
+    },
+    {
+        "question_number": 427,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88269-exam-aws-certified-cloud-practitioner-topic-1-question-427/"
+    },
+    {
+        "question_number": 428,
+        "link": "https://www.examtopics.com/discussions/amazon/view/87585-exam-aws-certified-cloud-practitioner-topic-1-question-428/"
+    },
+    {
+        "question_number": 429,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88529-exam-aws-certified-cloud-practitioner-topic-1-question-429/"
+    },
+    {
+        "question_number": 430,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96569-exam-aws-certified-cloud-practitioner-topic-1-question-430/"
+    },
+    {
+        "question_number": 431,
+        "link": "https://www.examtopics.com/discussions/amazon/view/91632-exam-aws-certified-cloud-practitioner-topic-1-question-431/"
+    },
+    {
+        "question_number": 432,
+        "link": "https://www.examtopics.com/discussions/amazon/view/151213-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 433,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90843-exam-aws-certified-cloud-practitioner-topic-1-question-433/"
+    },
+    {
+        "question_number": 434,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90844-exam-aws-certified-cloud-practitioner-topic-1-question-434/"
+    },
+    {
+        "question_number": 435,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90818-exam-aws-certified-cloud-practitioner-topic-1-question-435/"
+    },
+    {
+        "question_number": 436,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90807-exam-aws-certified-cloud-practitioner-topic-1-question-436/"
+    },
+    {
+        "question_number": 437,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90865-exam-aws-certified-cloud-practitioner-topic-1-question-437/"
+    },
+    {
+        "question_number": 438,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90819-exam-aws-certified-cloud-practitioner-topic-1-question-438/"
+    },
+    {
+        "question_number": 439,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90868-exam-aws-certified-cloud-practitioner-topic-1-question-439/"
+    },
+    {
+        "question_number": 440,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90845-exam-aws-certified-cloud-practitioner-topic-1-question-440/"
+    },
+    {
+        "question_number": 441,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90911-exam-aws-certified-cloud-practitioner-topic-1-question-441/"
+    },
+    {
+        "question_number": 442,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90869-exam-aws-certified-cloud-practitioner-topic-1-question-442/"
+    },
+    {
+        "question_number": 443,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90846-exam-aws-certified-cloud-practitioner-topic-1-question-443/"
+    },
+    {
+        "question_number": 444,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147610-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 445,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90967-exam-aws-certified-cloud-practitioner-topic-1-question-445/"
+    },
+    {
+        "question_number": 446,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90968-exam-aws-certified-cloud-practitioner-topic-1-question-446/"
+    },
+    {
+        "question_number": 447,
+        "link": "https://www.examtopics.com/discussions/amazon/view/151216-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 448,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90848-exam-aws-certified-cloud-practitioner-topic-1-question-448/"
+    },
+    {
+        "question_number": 449,
+        "link": "https://www.examtopics.com/discussions/amazon/view/146543-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 450,
+        "link": "https://www.examtopics.com/discussions/amazon/view/142849-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 451,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90987-exam-aws-certified-cloud-practitioner-topic-1-question-451/"
+    },
+    {
+        "question_number": 452,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90988-exam-aws-certified-cloud-practitioner-topic-1-question-452/"
+    },
+    {
+        "question_number": 453,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90839-exam-aws-certified-cloud-practitioner-topic-1-question-453/"
+    },
+    {
+        "question_number": 454,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90849-exam-aws-certified-cloud-practitioner-topic-1-question-454/"
+    },
+    {
+        "question_number": 455,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90850-exam-aws-certified-cloud-practitioner-topic-1-question-455/"
+    },
+    {
+        "question_number": 456,
+        "link": "https://www.examtopics.com/discussions/amazon/view/91117-exam-aws-certified-cloud-practitioner-topic-1-question-456/"
+    },
+    {
+        "question_number": 457,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90989-exam-aws-certified-cloud-practitioner-topic-1-question-457/"
+    },
+    {
+        "question_number": 458,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90851-exam-aws-certified-cloud-practitioner-topic-1-question-458/"
+    },
+    {
+        "question_number": 459,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90969-exam-aws-certified-cloud-practitioner-topic-1-question-459/"
+    },
+    {
+        "question_number": 460,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90971-exam-aws-certified-cloud-practitioner-topic-1-question-460/"
+    },
+    {
+        "question_number": 461,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90920-exam-aws-certified-cloud-practitioner-topic-1-question-461/"
+    },
+    {
+        "question_number": 462,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90990-exam-aws-certified-cloud-practitioner-topic-1-question-462/"
+    },
+    {
+        "question_number": 463,
+        "link": "https://www.examtopics.com/discussions/amazon/view/92885-exam-aws-certified-cloud-practitioner-topic-1-question-463/"
+    },
+    {
+        "question_number": 464,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90918-exam-aws-certified-cloud-practitioner-topic-1-question-464/"
+    },
+    {
+        "question_number": 465,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90919-exam-aws-certified-cloud-practitioner-topic-1-question-465/"
+    },
+    {
+        "question_number": 466,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90991-exam-aws-certified-cloud-practitioner-topic-1-question-466/"
+    },
+    {
+        "question_number": 467,
+        "link": "https://www.examtopics.com/discussions/amazon/view/91308-exam-aws-certified-cloud-practitioner-topic-1-question-467/"
+    },
+    {
+        "question_number": 468,
+        "link": "https://www.examtopics.com/discussions/amazon/view/150407-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 469,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90977-exam-aws-certified-cloud-practitioner-topic-1-question-469/"
+    },
+    {
+        "question_number": 470,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90861-exam-aws-certified-cloud-practitioner-topic-1-question-470/"
+    },
+    {
+        "question_number": 471,
+        "link": "https://www.examtopics.com/discussions/amazon/view/148056-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 472,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90862-exam-aws-certified-cloud-practitioner-topic-1-question-472/"
+    },
+    {
+        "question_number": 473,
+        "link": "https://www.examtopics.com/discussions/amazon/view/148585-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 474,
+        "link": "https://www.examtopics.com/discussions/amazon/view/148387-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 475,
+        "link": "https://www.examtopics.com/discussions/amazon/view/151226-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 476,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90916-exam-aws-certified-cloud-practitioner-topic-1-question-476/"
+    },
+    {
+        "question_number": 477,
+        "link": "https://www.examtopics.com/discussions/amazon/view/90907-exam-aws-certified-cloud-practitioner-topic-1-question-477/"
+    },
+    {
+        "question_number": 478,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96607-exam-aws-certified-cloud-practitioner-topic-1-question-478/"
+    },
+    {
+        "question_number": 479,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96609-exam-aws-certified-cloud-practitioner-topic-1-question-479/"
+    },
+    {
+        "question_number": 480,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93877-exam-aws-certified-cloud-practitioner-topic-1-question-480/"
+    },
+    {
+        "question_number": 481,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93732-exam-aws-certified-cloud-practitioner-topic-1-question-481/"
+    },
+    {
+        "question_number": 482,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94331-exam-aws-certified-cloud-practitioner-topic-1-question-482/"
+    },
+    {
+        "question_number": 483,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93733-exam-aws-certified-cloud-practitioner-topic-1-question-483/"
+    },
+    {
+        "question_number": 484,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96648-exam-aws-certified-cloud-practitioner-topic-1-question-484/"
+    },
+    {
+        "question_number": 485,
+        "link": "https://www.examtopics.com/discussions/amazon/view/151231-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 486,
+        "link": "https://www.examtopics.com/discussions/amazon/view/151232-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 487,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94243-exam-aws-certified-cloud-practitioner-topic-1-question-487/"
+    },
+    {
+        "question_number": 488,
+        "link": "https://www.examtopics.com/discussions/amazon/view/95813-exam-aws-certified-cloud-practitioner-topic-1-question-488/"
+    },
+    {
+        "question_number": 489,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96651-exam-aws-certified-cloud-practitioner-topic-1-question-489/"
+    },
+    {
+        "question_number": 490,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96652-exam-aws-certified-cloud-practitioner-topic-1-question-490/"
+    },
+    {
+        "question_number": 491,
+        "link": "https://www.examtopics.com/discussions/amazon/view/124319-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 492,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94335-exam-aws-certified-cloud-practitioner-topic-1-question-492/"
+    },
+    {
+        "question_number": 493,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94336-exam-aws-certified-cloud-practitioner-topic-1-question-493/"
+    },
+    {
+        "question_number": 494,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93880-exam-aws-certified-cloud-practitioner-topic-1-question-494/"
+    },
+    {
+        "question_number": 495,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94337-exam-aws-certified-cloud-practitioner-topic-1-question-495/"
+    },
+    {
+        "question_number": 496,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94610-exam-aws-certified-cloud-practitioner-topic-1-question-496/"
+    },
+    {
+        "question_number": 497,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96661-exam-aws-certified-cloud-practitioner-topic-1-question-497/"
+    },
+    {
+        "question_number": 498,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94612-exam-aws-certified-cloud-practitioner-topic-1-question-498/"
+    },
+    {
+        "question_number": 499,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96664-exam-aws-certified-cloud-practitioner-topic-1-question-499/"
+    },
+    {
+        "question_number": 500,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93735-exam-aws-certified-cloud-practitioner-topic-1-question-500/"
+    },
+    {
+        "question_number": 501,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94447-exam-aws-certified-cloud-practitioner-topic-1-question-501/"
+    },
+    {
+        "question_number": 502,
+        "link": "https://www.examtopics.com/discussions/amazon/view/143585-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 503,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96666-exam-aws-certified-cloud-practitioner-topic-1-question-503/"
+    },
+    {
+        "question_number": 504,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96667-exam-aws-certified-cloud-practitioner-topic-1-question-504/"
+    },
+    {
+        "question_number": 505,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93736-exam-aws-certified-cloud-practitioner-topic-1-question-505/"
+    },
+    {
+        "question_number": 506,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93737-exam-aws-certified-cloud-practitioner-topic-1-question-506/"
+    },
+    {
+        "question_number": 507,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96669-exam-aws-certified-cloud-practitioner-topic-1-question-507/"
+    },
+    {
+        "question_number": 508,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96670-exam-aws-certified-cloud-practitioner-topic-1-question-508/"
+    },
+    {
+        "question_number": 509,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96671-exam-aws-certified-cloud-practitioner-topic-1-question-509/"
+    },
+    {
+        "question_number": 510,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93739-exam-aws-certified-cloud-practitioner-topic-1-question-510/"
+    },
+    {
+        "question_number": 511,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96672-exam-aws-certified-cloud-practitioner-topic-1-question-511/"
+    },
+    {
+        "question_number": 512,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96674-exam-aws-certified-cloud-practitioner-topic-1-question-512/"
+    },
+    {
+        "question_number": 513,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96675-exam-aws-certified-cloud-practitioner-topic-1-question-513/"
+    },
+    {
+        "question_number": 514,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96625-exam-aws-certified-cloud-practitioner-topic-1-question-514/"
+    },
+    {
+        "question_number": 515,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96676-exam-aws-certified-cloud-practitioner-topic-1-question-515/"
+    },
+    {
+        "question_number": 516,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96677-exam-aws-certified-cloud-practitioner-topic-1-question-516/"
+    },
+    {
+        "question_number": 517,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96679-exam-aws-certified-cloud-practitioner-topic-1-question-517/"
+    },
+    {
+        "question_number": 518,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96622-exam-aws-certified-cloud-practitioner-topic-1-question-518/"
+    },
+    {
+        "question_number": 519,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93740-exam-aws-certified-cloud-practitioner-topic-1-question-519/"
+    },
+    {
+        "question_number": 520,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96680-exam-aws-certified-cloud-practitioner-topic-1-question-520/"
+    },
+    {
+        "question_number": 521,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94065-exam-aws-certified-cloud-practitioner-topic-1-question-521/"
+    },
+    {
+        "question_number": 522,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94066-exam-aws-certified-cloud-practitioner-topic-1-question-522/"
+    },
+    {
+        "question_number": 523,
+        "link": "https://www.examtopics.com/discussions/amazon/view/95625-exam-aws-certified-cloud-practitioner-topic-1-question-523/"
+    },
+    {
+        "question_number": 524,
+        "link": "https://www.examtopics.com/discussions/amazon/view/95626-exam-aws-certified-cloud-practitioner-topic-1-question-524/"
+    },
+    {
+        "question_number": 525,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93741-exam-aws-certified-cloud-practitioner-topic-1-question-525/"
+    },
+    {
+        "question_number": 526,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96691-exam-aws-certified-cloud-practitioner-topic-1-question-526/"
+    },
+    {
+        "question_number": 527,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93742-exam-aws-certified-cloud-practitioner-topic-1-question-527/"
+    },
+    {
+        "question_number": 528,
+        "link": "https://www.examtopics.com/discussions/amazon/view/94237-exam-aws-certified-cloud-practitioner-topic-1-question-528/"
+    },
+    {
+        "question_number": 529,
+        "link": "https://www.examtopics.com/discussions/amazon/view/93838-exam-aws-certified-cloud-practitioner-topic-1-question-529/"
+    },
+    {
+        "question_number": 530,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96439-exam-aws-certified-cloud-practitioner-topic-1-question-530/"
+    },
+    {
+        "question_number": 531,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96102-exam-aws-certified-cloud-practitioner-topic-1-question-531/"
+    },
+    {
+        "question_number": 532,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96175-exam-aws-certified-cloud-practitioner-topic-1-question-532/"
+    },
+    {
+        "question_number": 533,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96693-exam-aws-certified-cloud-practitioner-topic-1-question-533/"
+    },
+    {
+        "question_number": 534,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96296-exam-aws-certified-cloud-practitioner-topic-1-question-534/"
+    },
+    {
+        "question_number": 535,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96297-exam-aws-certified-cloud-practitioner-topic-1-question-535/"
+    },
+    {
+        "question_number": 536,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96699-exam-aws-certified-cloud-practitioner-topic-1-question-536/"
+    },
+    {
+        "question_number": 537,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96177-exam-aws-certified-cloud-practitioner-topic-1-question-537/"
+    },
+    {
+        "question_number": 538,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96178-exam-aws-certified-cloud-practitioner-topic-1-question-538/"
+    },
+    {
+        "question_number": 539,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96700-exam-aws-certified-cloud-practitioner-topic-1-question-539/"
+    },
+    {
+        "question_number": 540,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96257-exam-aws-certified-cloud-practitioner-topic-1-question-540/"
+    },
+    {
+        "question_number": 541,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96305-exam-aws-certified-cloud-practitioner-topic-1-question-541/"
+    },
+    {
+        "question_number": 542,
+        "link": "https://www.examtopics.com/discussions/amazon/view/148101-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 543,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96304-exam-aws-certified-cloud-practitioner-topic-1-question-543/"
+    },
+    {
+        "question_number": 544,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96307-exam-aws-certified-cloud-practitioner-topic-1-question-544/"
+    },
+    {
+        "question_number": 545,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96308-exam-aws-certified-cloud-practitioner-topic-1-question-545/"
+    },
+    {
+        "question_number": 546,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96310-exam-aws-certified-cloud-practitioner-topic-1-question-546/"
+    },
+    {
+        "question_number": 547,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96311-exam-aws-certified-cloud-practitioner-topic-1-question-547/"
+    },
+    {
+        "question_number": 548,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96312-exam-aws-certified-cloud-practitioner-topic-1-question-548/"
+    },
+    {
+        "question_number": 549,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96313-exam-aws-certified-cloud-practitioner-topic-1-question-549/"
+    },
+    {
+        "question_number": 550,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96314-exam-aws-certified-cloud-practitioner-topic-1-question-550/"
+    },
+    {
+        "question_number": 551,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96315-exam-aws-certified-cloud-practitioner-topic-1-question-551/"
+    },
+    {
+        "question_number": 552,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96316-exam-aws-certified-cloud-practitioner-topic-1-question-552/"
+    },
+    {
+        "question_number": 553,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96318-exam-aws-certified-cloud-practitioner-topic-1-question-553/"
+    },
+    {
+        "question_number": 554,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96319-exam-aws-certified-cloud-practitioner-topic-1-question-554/"
+    },
+    {
+        "question_number": 555,
+        "link": "https://www.examtopics.com/discussions/amazon/view/151277-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 556,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96184-exam-aws-certified-cloud-practitioner-topic-1-question-556/"
+    },
+    {
+        "question_number": 557,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96322-exam-aws-certified-cloud-practitioner-topic-1-question-557/"
+    },
+    {
+        "question_number": 558,
+        "link": "https://www.examtopics.com/discussions/amazon/view/141000-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 559,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96324-exam-aws-certified-cloud-practitioner-topic-1-question-559/"
+    },
+    {
+        "question_number": 560,
+        "link": "https://www.examtopics.com/discussions/amazon/view/148525-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 561,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96325-exam-aws-certified-cloud-practitioner-topic-1-question-561/"
+    },
+    {
+        "question_number": 562,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96326-exam-aws-certified-cloud-practitioner-topic-1-question-562/"
+    },
+    {
+        "question_number": 563,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96327-exam-aws-certified-cloud-practitioner-topic-1-question-563/"
+    },
+    {
+        "question_number": 564,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96328-exam-aws-certified-cloud-practitioner-topic-1-question-564/"
+    },
+    {
+        "question_number": 565,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96329-exam-aws-certified-cloud-practitioner-topic-1-question-565/"
+    },
+    {
+        "question_number": 566,
+        "link": "https://www.examtopics.com/discussions/amazon/view/142886-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 567,
+        "link": "https://www.examtopics.com/discussions/amazon/view/140767-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 568,
+        "link": "https://www.examtopics.com/discussions/amazon/view/144995-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 569,
+        "link": "https://www.examtopics.com/discussions/amazon/view/142508-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 570,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96336-exam-aws-certified-cloud-practitioner-topic-1-question-570/"
+    },
+    {
+        "question_number": 571,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96337-exam-aws-certified-cloud-practitioner-topic-1-question-571/"
+    },
+    {
+        "question_number": 572,
+        "link": "https://www.examtopics.com/discussions/amazon/view/141003-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 573,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96339-exam-aws-certified-cloud-practitioner-topic-1-question-573/"
+    },
+    {
+        "question_number": 574,
+        "link": "https://www.examtopics.com/discussions/amazon/view/141005-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 575,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96341-exam-aws-certified-cloud-practitioner-topic-1-question-575/"
+    },
+    {
+        "question_number": 576,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96342-exam-aws-certified-cloud-practitioner-topic-1-question-576/"
+    },
+    {
+        "question_number": 577,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96343-exam-aws-certified-cloud-practitioner-topic-1-question-577/"
+    },
+    {
+        "question_number": 578,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96344-exam-aws-certified-cloud-practitioner-topic-1-question-578/"
+    },
+    {
+        "question_number": 579,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96071-exam-aws-certified-cloud-practitioner-topic-1-question-579/"
+    },
+    {
+        "question_number": 580,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96188-exam-aws-certified-cloud-practitioner-topic-1-question-580/"
+    },
+    {
+        "question_number": 581,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96348-exam-aws-certified-cloud-practitioner-topic-1-question-581/"
+    },
+    {
+        "question_number": 582,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96349-exam-aws-certified-cloud-practitioner-topic-1-question-582/"
+    },
+    {
+        "question_number": 583,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96350-exam-aws-certified-cloud-practitioner-topic-1-question-583/"
+    },
+    {
+        "question_number": 584,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96351-exam-aws-certified-cloud-practitioner-topic-1-question-584/"
+    },
+    {
+        "question_number": 585,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96353-exam-aws-certified-cloud-practitioner-topic-1-question-585/"
+    },
+    {
+        "question_number": 586,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96356-exam-aws-certified-cloud-practitioner-topic-1-question-586/"
+    },
+    {
+        "question_number": 587,
+        "link": "https://www.examtopics.com/discussions/amazon/view/151284-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 588,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96358-exam-aws-certified-cloud-practitioner-topic-1-question-588/"
+    },
+    {
+        "question_number": 589,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96359-exam-aws-certified-cloud-practitioner-topic-1-question-589/"
+    },
+    {
+        "question_number": 590,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96360-exam-aws-certified-cloud-practitioner-topic-1-question-590/"
+    },
+    {
+        "question_number": 591,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96361-exam-aws-certified-cloud-practitioner-topic-1-question-591/"
+    },
+    {
+        "question_number": 592,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96362-exam-aws-certified-cloud-practitioner-topic-1-question-592/"
+    },
+    {
+        "question_number": 593,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96363-exam-aws-certified-cloud-practitioner-topic-1-question-593/"
+    },
+    {
+        "question_number": 594,
+        "link": "https://www.examtopics.com/discussions/amazon/view/96364-exam-aws-certified-cloud-practitioner-topic-1-question-594/"
+    },
+    {
+        "question_number": 595,
+        "link": "https://www.examtopics.com/discussions/amazon/view/148255-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 596,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98179-exam-aws-certified-cloud-practitioner-topic-1-question-596/"
+    },
+    {
+        "question_number": 597,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98180-exam-aws-certified-cloud-practitioner-topic-1-question-597/"
+    },
+    {
+        "question_number": 598,
+        "link": "https://www.examtopics.com/discussions/amazon/view/97948-exam-aws-certified-cloud-practitioner-topic-1-question-598/"
+    },
+    {
+        "question_number": 599,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147634-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 600,
+        "link": "https://www.examtopics.com/discussions/amazon/view/105606-exam-aws-certified-cloud-practitioner-topic-1-question-600/"
+    },
+    {
+        "question_number": 601,
+        "link": "https://www.examtopics.com/discussions/amazon/view/97647-exam-aws-certified-cloud-practitioner-topic-1-question-601/"
+    },
+    {
+        "question_number": 602,
+        "link": "https://www.examtopics.com/discussions/amazon/view/144492-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 603,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98500-exam-aws-certified-cloud-practitioner-topic-1-question-603/"
+    },
+    {
+        "question_number": 604,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101630-exam-aws-certified-cloud-practitioner-topic-1-question-604/"
+    },
+    {
+        "question_number": 605,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98501-exam-aws-certified-cloud-practitioner-topic-1-question-605/"
+    },
+    {
+        "question_number": 606,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147639-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 607,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98202-exam-aws-certified-cloud-practitioner-topic-1-question-607/"
+    },
+    {
+        "question_number": 608,
+        "link": "https://www.examtopics.com/discussions/amazon/view/97650-exam-aws-certified-cloud-practitioner-topic-1-question-608/"
+    },
+    {
+        "question_number": 609,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99438-exam-aws-certified-cloud-practitioner-topic-1-question-609/"
+    },
+    {
+        "question_number": 610,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98025-exam-aws-certified-cloud-practitioner-topic-1-question-610/"
+    },
+    {
+        "question_number": 611,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101698-exam-aws-certified-cloud-practitioner-topic-1-question-611/"
+    },
+    {
+        "question_number": 612,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147643-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 613,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102666-exam-aws-certified-cloud-practitioner-topic-1-question-613/"
+    },
+    {
+        "question_number": 614,
+        "link": "https://www.examtopics.com/discussions/amazon/view/97748-exam-aws-certified-cloud-practitioner-topic-1-question-614/"
+    },
+    {
+        "question_number": 615,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99085-exam-aws-certified-cloud-practitioner-topic-1-question-615/"
+    },
+    {
+        "question_number": 616,
+        "link": "https://www.examtopics.com/discussions/amazon/view/104232-exam-aws-certified-cloud-practitioner-topic-1-question-616/"
+    },
+    {
+        "question_number": 617,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108506-exam-aws-certified-cloud-practitioner-topic-1-question-617/"
+    },
+    {
+        "question_number": 618,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99064-exam-aws-certified-cloud-practitioner-topic-1-question-618/"
+    },
+    {
+        "question_number": 619,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99562-exam-aws-certified-cloud-practitioner-topic-1-question-619/"
+    },
+    {
+        "question_number": 620,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147651-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 621,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101727-exam-aws-certified-cloud-practitioner-topic-1-question-621/"
+    },
+    {
+        "question_number": 622,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101728-exam-aws-certified-cloud-practitioner-topic-1-question-622/"
+    },
+    {
+        "question_number": 623,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115602-exam-aws-certified-cloud-practitioner-topic-1-question-623/"
+    },
+    {
+        "question_number": 624,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147655-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 625,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98209-exam-aws-certified-cloud-practitioner-topic-1-question-625/"
+    },
+    {
+        "question_number": 626,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147657-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 627,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101596-exam-aws-certified-cloud-practitioner-topic-1-question-627/"
+    },
+    {
+        "question_number": 628,
+        "link": "https://www.examtopics.com/discussions/amazon/view/98989-exam-aws-certified-cloud-practitioner-topic-1-question-628/"
+    },
+    {
+        "question_number": 629,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101729-exam-aws-certified-cloud-practitioner-topic-1-question-629/"
+    },
+    {
+        "question_number": 630,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101730-exam-aws-certified-cloud-practitioner-topic-1-question-630/"
+    },
+    {
+        "question_number": 631,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101732-exam-aws-certified-cloud-practitioner-topic-1-question-631/"
+    },
+    {
+        "question_number": 632,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147662-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 633,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147663-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 634,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147664-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 635,
+        "link": "https://www.examtopics.com/discussions/amazon/view/97820-exam-aws-certified-cloud-practitioner-topic-1-question-635/"
+    },
+    {
+        "question_number": 636,
+        "link": "https://www.examtopics.com/discussions/amazon/view/97821-exam-aws-certified-cloud-practitioner-topic-1-question-636/"
+    },
+    {
+        "question_number": 637,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99463-exam-aws-certified-cloud-practitioner-topic-1-question-637/"
+    },
+    {
+        "question_number": 638,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99464-exam-aws-certified-cloud-practitioner-topic-1-question-638/"
+    },
+    {
+        "question_number": 639,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99465-exam-aws-certified-cloud-practitioner-topic-1-question-639/"
+    },
+    {
+        "question_number": 640,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99467-exam-aws-certified-cloud-practitioner-topic-1-question-640/"
+    },
+    {
+        "question_number": 641,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99468-exam-aws-certified-cloud-practitioner-topic-1-question-641/"
+    },
+    {
+        "question_number": 642,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99469-exam-aws-certified-cloud-practitioner-topic-1-question-642/"
+    },
+    {
+        "question_number": 643,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99472-exam-aws-certified-cloud-practitioner-topic-1-question-643/"
+    },
+    {
+        "question_number": 644,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99473-exam-aws-certified-cloud-practitioner-topic-1-question-644/"
+    },
+    {
+        "question_number": 645,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99474-exam-aws-certified-cloud-practitioner-topic-1-question-645/"
+    },
+    {
+        "question_number": 646,
+        "link": "https://www.examtopics.com/discussions/amazon/view/100163-exam-aws-certified-cloud-practitioner-topic-1-question-646/"
+    },
+    {
+        "question_number": 647,
+        "link": "https://www.examtopics.com/discussions/amazon/view/146252-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 648,
+        "link": "https://www.examtopics.com/discussions/amazon/view/100143-exam-aws-certified-cloud-practitioner-topic-1-question-648/"
+    },
+    {
+        "question_number": 649,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101736-exam-aws-certified-cloud-practitioner-topic-1-question-649/"
+    },
+    {
+        "question_number": 650,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101737-exam-aws-certified-cloud-practitioner-topic-1-question-650/"
+    },
+    {
+        "question_number": 651,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99441-exam-aws-certified-cloud-practitioner-topic-1-question-651/"
+    },
+    {
+        "question_number": 652,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99521-exam-aws-certified-cloud-practitioner-topic-1-question-652/"
+    },
+    {
+        "question_number": 653,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99442-exam-aws-certified-cloud-practitioner-topic-1-question-653/"
+    },
+    {
+        "question_number": 654,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99443-exam-aws-certified-cloud-practitioner-topic-1-question-654/"
+    },
+    {
+        "question_number": 655,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99444-exam-aws-certified-cloud-practitioner-topic-1-question-655/"
+    },
+    {
+        "question_number": 656,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101950-exam-aws-certified-cloud-practitioner-topic-1-question-656/"
+    },
+    {
+        "question_number": 657,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99445-exam-aws-certified-cloud-practitioner-topic-1-question-657/"
+    },
+    {
+        "question_number": 658,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99720-exam-aws-certified-cloud-practitioner-topic-1-question-658/"
+    },
+    {
+        "question_number": 659,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99446-exam-aws-certified-cloud-practitioner-topic-1-question-659/"
+    },
+    {
+        "question_number": 660,
+        "link": "https://www.examtopics.com/discussions/amazon/view/101426-exam-aws-certified-cloud-practitioner-topic-1-question-660/"
+    },
+    {
+        "question_number": 661,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99721-exam-aws-certified-cloud-practitioner-topic-1-question-661/"
+    },
+    {
+        "question_number": 662,
+        "link": "https://www.examtopics.com/discussions/amazon/view/36113-exam-aws-certified-solutions-architect-professional-topic-1/"
+    },
+    {
+        "question_number": 663,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99514-exam-aws-certified-cloud-practitioner-topic-1-question-663/"
+    },
+    {
+        "question_number": 664,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102984-exam-aws-certified-cloud-practitioner-topic-1-question-664/"
+    },
+    {
+        "question_number": 665,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102980-exam-aws-certified-cloud-practitioner-topic-1-question-665/"
+    },
+    {
+        "question_number": 666,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109418-exam-aws-certified-cloud-practitioner-topic-1-question-666/"
+    },
+    {
+        "question_number": 667,
+        "link": "https://www.examtopics.com/discussions/amazon/view/103474-exam-aws-certified-cloud-practitioner-topic-1-question-667/"
+    },
+    {
+        "question_number": 668,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99447-exam-aws-certified-cloud-practitioner-topic-1-question-668/"
+    },
+    {
+        "question_number": 669,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99510-exam-aws-certified-cloud-practitioner-topic-1-question-669/"
+    },
+    {
+        "question_number": 670,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147721-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 671,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99507-exam-aws-certified-cloud-practitioner-topic-1-question-671/"
+    },
+    {
+        "question_number": 672,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99506-exam-aws-certified-cloud-practitioner-topic-1-question-672/"
+    },
+    {
+        "question_number": 673,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147724-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 674,
+        "link": "https://www.examtopics.com/discussions/amazon/view/100167-exam-aws-certified-cloud-practitioner-topic-1-question-674/"
+    },
+    {
+        "question_number": 675,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99449-exam-aws-certified-cloud-practitioner-topic-1-question-675/"
+    },
+    {
+        "question_number": 676,
+        "link": "https://www.examtopics.com/discussions/amazon/view/100168-exam-aws-certified-cloud-practitioner-topic-1-question-676/"
+    },
+    {
+        "question_number": 677,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147728-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 678,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99503-exam-aws-certified-cloud-practitioner-topic-1-question-678/"
+    },
+    {
+        "question_number": 679,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102364-exam-aws-certified-cloud-practitioner-topic-1-question-679/"
+    },
+    {
+        "question_number": 680,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99502-exam-aws-certified-cloud-practitioner-topic-1-question-680/"
+    },
+    {
+        "question_number": 681,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99501-exam-aws-certified-cloud-practitioner-topic-1-question-681/"
+    },
+    {
+        "question_number": 682,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102365-exam-aws-certified-cloud-practitioner-topic-1-question-682/"
+    },
+    {
+        "question_number": 683,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147734-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 684,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99499-exam-aws-certified-cloud-practitioner-topic-1-question-684/"
+    },
+    {
+        "question_number": 685,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147736-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 686,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147737-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 687,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99494-exam-aws-certified-cloud-practitioner-topic-1-question-687/"
+    },
+    {
+        "question_number": 688,
+        "link": "https://www.examtopics.com/discussions/amazon/view/99493-exam-aws-certified-cloud-practitioner-topic-1-question-688/"
+    },
+    {
+        "question_number": 689,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102366-exam-aws-certified-cloud-practitioner-topic-1-question-689/"
+    },
+    {
+        "question_number": 690,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102367-exam-aws-certified-cloud-practitioner-topic-1-question-690/"
+    },
+    {
+        "question_number": 691,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102368-exam-aws-certified-cloud-practitioner-topic-1-question-691/"
+    },
+    {
+        "question_number": 692,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102361-exam-aws-certified-cloud-practitioner-topic-1-question-692/"
+    },
+    {
+        "question_number": 693,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102362-exam-aws-certified-cloud-practitioner-topic-1-question-693/"
+    },
+    {
+        "question_number": 694,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102369-exam-aws-certified-cloud-practitioner-topic-1-question-694/"
+    },
+    {
+        "question_number": 695,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102370-exam-aws-certified-cloud-practitioner-topic-1-question-695/"
+    },
+    {
+        "question_number": 696,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102371-exam-aws-certified-cloud-practitioner-topic-1-question-696/"
+    },
+    {
+        "question_number": 697,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147745-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 698,
+        "link": "https://www.examtopics.com/discussions/amazon/view/102373-exam-aws-certified-cloud-practitioner-topic-1-question-698/"
+    },
+    {
+        "question_number": 699,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106649-exam-aws-certified-cloud-practitioner-topic-1-question-699/"
+    },
+    {
+        "question_number": 701,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106485-exam-aws-certified-cloud-practitioner-topic-1-question-701/"
+    },
+    {
+        "question_number": 702,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106647-exam-aws-certified-cloud-practitioner-topic-1-question-702/"
+    },
+    {
+        "question_number": 703,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106645-exam-aws-certified-cloud-practitioner-topic-1-question-703/"
+    },
+    {
+        "question_number": 704,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106644-exam-aws-certified-cloud-practitioner-topic-1-question-704/"
+    },
+    {
+        "question_number": 705,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106643-exam-aws-certified-cloud-practitioner-topic-1-question-705/"
+    },
+    {
+        "question_number": 706,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106642-exam-aws-certified-cloud-practitioner-topic-1-question-706/"
+    },
+    {
+        "question_number": 707,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106641-exam-aws-certified-cloud-practitioner-topic-1-question-707/"
+    },
+    {
+        "question_number": 708,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147186-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 709,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106637-exam-aws-certified-cloud-practitioner-topic-1-question-709/"
+    },
+    {
+        "question_number": 710,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106635-exam-aws-certified-cloud-practitioner-topic-1-question-710/"
+    },
+    {
+        "question_number": 711,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106839-exam-aws-certified-cloud-practitioner-topic-1-question-711/"
+    },
+    {
+        "question_number": 712,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106836-exam-aws-certified-cloud-practitioner-topic-1-question-712/"
+    },
+    {
+        "question_number": 713,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106632-exam-aws-certified-cloud-practitioner-topic-1-question-713/"
+    },
+    {
+        "question_number": 714,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106631-exam-aws-certified-cloud-practitioner-topic-1-question-714/"
+    },
+    {
+        "question_number": 715,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106833-exam-aws-certified-cloud-practitioner-topic-1-question-715/"
+    },
+    {
+        "question_number": 716,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106630-exam-aws-certified-cloud-practitioner-topic-1-question-716/"
+    },
+    {
+        "question_number": 717,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106628-exam-aws-certified-cloud-practitioner-topic-1-question-717/"
+    },
+    {
+        "question_number": 718,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106821-exam-aws-certified-cloud-practitioner-topic-1-question-718/"
+    },
+    {
+        "question_number": 719,
+        "link": "https://www.examtopics.com/discussions/amazon/view/147761-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 720,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106626-exam-aws-certified-cloud-practitioner-topic-1-question-720/"
+    },
+    {
+        "question_number": 721,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106820-exam-aws-certified-cloud-practitioner-topic-1-question-721/"
+    },
+    {
+        "question_number": 722,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106625-exam-aws-certified-cloud-practitioner-topic-1-question-722/"
+    },
+    {
+        "question_number": 723,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108330-exam-aws-certified-cloud-practitioner-topic-1-question-723/"
+    },
+    {
+        "question_number": 724,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106623-exam-aws-certified-cloud-practitioner-topic-1-question-724/"
+    },
+    {
+        "question_number": 725,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106622-exam-aws-certified-cloud-practitioner-topic-1-question-725/"
+    },
+    {
+        "question_number": 726,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106819-exam-aws-certified-cloud-practitioner-topic-1-question-726/"
+    },
+    {
+        "question_number": 727,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106620-exam-aws-certified-cloud-practitioner-topic-1-question-727/"
+    },
+    {
+        "question_number": 728,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106619-exam-aws-certified-cloud-practitioner-topic-1-question-728/"
+    },
+    {
+        "question_number": 729,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106618-exam-aws-certified-cloud-practitioner-topic-1-question-729/"
+    },
+    {
+        "question_number": 730,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106617-exam-aws-certified-cloud-practitioner-topic-1-question-730/"
+    },
+    {
+        "question_number": 731,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106616-exam-aws-certified-cloud-practitioner-topic-1-question-731/"
+    },
+    {
+        "question_number": 732,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106615-exam-aws-certified-cloud-practitioner-topic-1-question-732/"
+    },
+    {
+        "question_number": 733,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106614-exam-aws-certified-cloud-practitioner-topic-1-question-733/"
+    },
+    {
+        "question_number": 734,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106613-exam-aws-certified-cloud-practitioner-topic-1-question-734/"
+    },
+    {
+        "question_number": 735,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106612-exam-aws-certified-cloud-practitioner-topic-1-question-735/"
+    },
+    {
+        "question_number": 736,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106610-exam-aws-certified-cloud-practitioner-topic-1-question-736/"
+    },
+    {
+        "question_number": 737,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106515-exam-aws-certified-cloud-practitioner-topic-1-question-737/"
+    },
+    {
+        "question_number": 738,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106609-exam-aws-certified-cloud-practitioner-topic-1-question-738/"
+    },
+    {
+        "question_number": 739,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106608-exam-aws-certified-cloud-practitioner-topic-1-question-739/"
+    },
+    {
+        "question_number": 740,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106607-exam-aws-certified-cloud-practitioner-topic-1-question-740/"
+    },
+    {
+        "question_number": 741,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106606-exam-aws-certified-cloud-practitioner-topic-1-question-741/"
+    },
+    {
+        "question_number": 742,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106558-exam-aws-certified-cloud-practitioner-topic-1-question-742/"
+    },
+    {
+        "question_number": 743,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106559-exam-aws-certified-cloud-practitioner-topic-1-question-743/"
+    },
+    {
+        "question_number": 744,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106346-exam-aws-certified-cloud-practitioner-topic-1-question-744/"
+    },
+    {
+        "question_number": 745,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106604-exam-aws-certified-cloud-practitioner-topic-1-question-745/"
+    },
+    {
+        "question_number": 746,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106603-exam-aws-certified-cloud-practitioner-topic-1-question-746/"
+    },
+    {
+        "question_number": 747,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106154-exam-aws-certified-cloud-practitioner-topic-1-question-747/"
+    },
+    {
+        "question_number": 748,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106349-exam-aws-certified-cloud-practitioner-topic-1-question-748/"
+    },
+    {
+        "question_number": 749,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106601-exam-aws-certified-cloud-practitioner-topic-1-question-749/"
+    },
+    {
+        "question_number": 750,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106600-exam-aws-certified-cloud-practitioner-topic-1-question-750/"
+    },
+    {
+        "question_number": 751,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106332-exam-aws-certified-cloud-practitioner-topic-1-question-751/"
+    },
+    {
+        "question_number": 752,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106587-exam-aws-certified-cloud-practitioner-topic-1-question-752/"
+    },
+    {
+        "question_number": 753,
+        "link": "https://www.examtopics.com/discussions/amazon/view/132944-exam-aws-certified-so/"
+    },
+    {
+        "question_number": 754,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106586-exam-aws-certified-cloud-practitioner-topic-1-question-754/"
+    },
+    {
+        "question_number": 755,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106197-exam-aws-certified-cloud-practitioner-topic-1-question-755/"
+    },
+    {
+        "question_number": 756,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106585-exam-aws-certified-cloud-practitioner-topic-1-question-756/"
+    },
+    {
+        "question_number": 757,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106333-exam-aws-certified-cloud-practitioner-topic-1-question-757/"
+    },
+    {
+        "question_number": 758,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106583-exam-aws-certified-cloud-practitioner-topic-1-question-758/"
+    },
+    {
+        "question_number": 759,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106582-exam-aws-certified-cloud-practitioner-topic-1-question-759/"
+    },
+    {
+        "question_number": 760,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106818-exam-aws-certified-cloud-practitioner-topic-1-question-760/"
+    },
+    {
+        "question_number": 761,
+        "link": "https://www.examtopics.com/discussions/amazon/view/133326-exam-aws-certified-solutions-architect-associate-saa-c03/"
+    },
+    {
+        "question_number": 762,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106578-exam-aws-certified-cloud-practitioner-topic-1-question-762/"
+    },
+    {
+        "question_number": 763,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106337-exam-aws-certified-cloud-practitioner-topic-1-question-763/"
+    },
+    {
+        "question_number": 764,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106335-exam-aws-certified-cloud-practitioner-topic-1-question-764/"
+    },
+    {
+        "question_number": 765,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106336-exam-aws-certified-cloud-practitioner-topic-1-question-765/"
+    },
+    {
+        "question_number": 766,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106338-exam-aws-certified-cloud-practitioner-topic-1-question-766/"
+    },
+    {
+        "question_number": 767,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106339-exam-aws-certified-cloud-practitioner-topic-1-question-767/"
+    },
+    {
+        "question_number": 768,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106340-exam-aws-certified-cloud-practitioner-topic-1-question-768/"
+    },
+    {
+        "question_number": 769,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106577-exam-aws-certified-cloud-practitioner-topic-1-question-769/"
+    },
+    {
+        "question_number": 770,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106576-exam-aws-certified-cloud-practitioner-topic-1-question-770/"
+    },
+    {
+        "question_number": 771,
+        "link": "http://examtopics.com/discussions/amazon/view/20110-exam-aws-sysops-topic-1-question-771-discussion/"
+    },
+    {
+        "question_number": 772,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106574-exam-aws-certified-cloud-practitioner-topic-1-question-772/"
+    },
+    {
+        "question_number": 773,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106571-exam-aws-certified-cloud-practitioner-topic-1-question-773/"
+    },
+    {
+        "question_number": 774,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106570-exam-aws-certified-cloud-practitioner-topic-1-question-774/"
+    },
+    {
+        "question_number": 775,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106569-exam-aws-certified-cloud-practitioner-topic-1-question-775/"
+    },
+    {
+        "question_number": 776,
+        "link": "https://www.examtopics.com/discussions/amazon/view/133008-exam-aws-certified-solutions-architect-associate-saa-c03/"
+    },
+    {
+        "question_number": 777,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106566-exam-aws-certified-cloud-practitioner-topic-1-question-777/"
+    },
+    {
+        "question_number": 778,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106565-exam-aws-certified-cloud-practitioner-topic-1-question-778/"
+    },
+    {
+        "question_number": 779,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106342-exam-aws-certified-cloud-practitioner-topic-1-question-779/"
+    },
+    {
+        "question_number": 780,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106506-exam-aws-certified-cloud-practitioner-topic-1-question-780/"
+    },
+    {
+        "question_number": 781,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108427-exam-aws-certified-cloud-practitioner-topic-1-question-781/"
+    },
+    {
+        "question_number": 782,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108986-exam-aws-certified-cloud-practitioner-topic-1-question-782/"
+    },
+    {
+        "question_number": 783,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107425-exam-aws-certified-cloud-practitioner-topic-1-question-783/"
+    },
+    {
+        "question_number": 784,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107304-exam-aws-certified-cloud-practitioner-topic-1-question-784/"
+    },
+    {
+        "question_number": 785,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107422-exam-aws-certified-cloud-practitioner-topic-1-question-785/"
+    },
+    {
+        "question_number": 786,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107305-exam-aws-certified-cloud-practitioner-topic-1-question-786/"
+    },
+    {
+        "question_number": 787,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109192-exam-aws-certified-cloud-practitioner-topic-1-question-787/"
+    },
+    {
+        "question_number": 788,
+        "link": "https://www.examtopics.com/discussions/amazon/view/133024-exam-aws-certified-solutions-architect-associate-saa-c03/"
+    },
+    {
+        "question_number": 789,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107307-exam-aws-certified-cloud-practitioner-topic-1-question-789/"
+    },
+    {
+        "question_number": 790,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106935-exam-aws-certified-cloud-practitioner-topic-1-question-790/"
+    },
+    {
+        "question_number": 791,
+        "link": "https://www.examtopics.com/discussions/amazon/view/110835-exam-aws-certified-cloud-practitioner-topic-1-question-791/"
+    },
+    {
+        "question_number": 792,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108112-exam-aws-certified-cloud-practitioner-topic-1-question-792/"
+    },
+    {
+        "question_number": 793,
+        "link": "https://www.examtopics.com/discussions/amazon/view/110739-exam-aws-certified-cloud-practitioner-topic-1-question-793/"
+    },
+    {
+        "question_number": 794,
+        "link": "https://www.examtopics.com/discussions/amazon/view/110118-exam-aws-certified-cloud-practitioner-topic-1-question-794/"
+    },
+    {
+        "question_number": 795,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107308-exam-aws-certified-cloud-practitioner-topic-1-question-795/"
+    },
+    {
+        "question_number": 796,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115771-exam-aws-certified-cloud-practitioner-topic-1-question-796/"
+    },
+    {
+        "question_number": 797,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107310-exam-aws-certified-cloud-practitioner-topic-1-question-797/"
+    },
+    {
+        "question_number": 798,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111110-exam-aws-certified-cloud-practitioner-topic-1-question-798/"
+    },
+    {
+        "question_number": 799,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107899-exam-aws-certified-cloud-practitioner-topic-1-question-799/"
+    },
+    {
+        "question_number": 800,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115743-exam-aws-certified-cloud-practitioner-topic-1-question-800/"
+    },
+    {
+        "question_number": 801,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107291-exam-aws-certified-cloud-practitioner-topic-1-question-801/"
+    },
+    {
+        "question_number": 802,
+        "link": "https://www.examtopics.com/discussions/amazon/view/110476-exam-aws-certified-cloud-practitioner-topic-1-question-802/"
+    },
+    {
+        "question_number": 803,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109393-exam-aws-certified-cloud-practitioner-topic-1-question-803/"
+    },
+    {
+        "question_number": 804,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109394-exam-aws-certified-cloud-practitioner-topic-1-question-804/"
+    },
+    {
+        "question_number": 805,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109396-exam-aws-certified-cloud-practitioner-topic-1-question-805/"
+    },
+    {
+        "question_number": 806,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106938-exam-aws-certified-cloud-practitioner-topic-1-question-806/"
+    },
+    {
+        "question_number": 807,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109397-exam-aws-certified-cloud-practitioner-topic-1-question-807/"
+    },
+    {
+        "question_number": 808,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107294-exam-aws-certified-cloud-practitioner-topic-1-question-808/"
+    },
+    {
+        "question_number": 809,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107408-exam-aws-certified-cloud-practitioner-topic-1-question-809/"
+    },
+    {
+        "question_number": 810,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106942-exam-aws-certified-cloud-practitioner-topic-1-question-810/"
+    },
+    {
+        "question_number": 811,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107295-exam-aws-certified-cloud-practitioner-topic-1-question-811/"
+    },
+    {
+        "question_number": 812,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107296-exam-aws-certified-cloud-practitioner-topic-1-question-812/"
+    },
+    {
+        "question_number": 813,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107297-exam-aws-certified-cloud-practitioner-topic-1-question-813/"
+    },
+    {
+        "question_number": 814,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107378-exam-aws-certified-cloud-practitioner-topic-1-question-814/"
+    },
+    {
+        "question_number": 815,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108322-exam-aws-certified-cloud-practitioner-topic-1-question-815/"
+    },
+    {
+        "question_number": 816,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115179-exam-aws-certified-cloud-practitioner-topic-1-question-816/"
+    },
+    {
+        "question_number": 817,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111274-exam-aws-certified-cloud-practitioner-topic-1-question-817/"
+    },
+    {
+        "question_number": 818,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111274-exam-aws-certified-cloud-practitioner-topic-1-question-817/"
+    },
+    {
+        "question_number": 819,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107410-exam-aws-certified-cloud-practitioner-topic-1-question-819/"
+    },
+    {
+        "question_number": 820,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107377-exam-aws-certified-cloud-practitioner-topic-1-question-820/"
+    },
+    {
+        "question_number": 821,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107299-exam-aws-certified-cloud-practitioner-topic-1-question-821/"
+    },
+    {
+        "question_number": 822,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107859-exam-aws-certified-cloud-practitioner-topic-1-question-822/"
+    },
+    {
+        "question_number": 823,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107300-exam-aws-certified-cloud-practitioner-topic-1-question-823/"
+    },
+    {
+        "question_number": 824,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107301-exam-aws-certified-cloud-practitioner-topic-1-question-824/"
+    },
+    {
+        "question_number": 825,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109199-exam-aws-certified-cloud-practitioner-topic-1-question-825/"
+    },
+    {
+        "question_number": 826,
+        "link": "https://www.examtopics.com/discussions/amazon/407/"
+    },
+    {
+        "question_number": 827,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107381-exam-aws-certified-cloud-practitioner-topic-1-question-827/"
+    },
+    {
+        "question_number": 828,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108321-exam-aws-certified-cloud-practitioner-topic-1-question-828/"
+    },
+    {
+        "question_number": 829,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107395-exam-aws-certified-cloud-practitioner-topic-1-question-829/"
+    },
+    {
+        "question_number": 830,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107396-exam-aws-certified-cloud-practitioner-topic-1-question-830/"
+    },
+    {
+        "question_number": 831,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111174-exam-aws-certified-cloud-practitioner-topic-1-question-831/"
+    },
+    {
+        "question_number": 832,
+        "link": "https://www.examtopics.com/discussions/amazon/view/110170-exam-aws-certified-cloud-practitioner-topic-1-question-832/"
+    },
+    {
+        "question_number": 833,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107429-exam-aws-certified-cloud-practitioner-topic-1-question-833/"
+    },
+    {
+        "question_number": 834,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108320-exam-aws-certified-cloud-practitioner-topic-1-question-834/"
+    },
+    {
+        "question_number": 835,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107551-exam-aws-certified-cloud-practitioner-topic-1-question-835/"
+    },
+    {
+        "question_number": 836,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115006-exam-aws-certified-cloud-practitioner-topic-1-question-836/"
+    },
+    {
+        "question_number": 837,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107552-exam-aws-certified-cloud-practitioner-topic-1-question-837/"
+    },
+    {
+        "question_number": 838,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108152-exam-aws-certified-cloud-practitioner-topic-1-question-838/"
+    },
+    {
+        "question_number": 839,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107427-exam-aws-certified-cloud-practitioner-topic-1-question-839/"
+    },
+    {
+        "question_number": 840,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115007-exam-aws-certified-cloud-practitioner-topic-1-question-840/"
+    },
+    {
+        "question_number": 841,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115181-exam-aws-certified-cloud-practitioner-topic-1-question-841/"
+    },
+    {
+        "question_number": 842,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115182-exam-aws-certified-cloud-practitioner-topic-1-question-842/"
+    },
+    {
+        "question_number": 843,
+        "link": "https://www.examtopics.com/discussions/amazon/view/106990-exam-aws-certified-cloud-practitioner-topic-1-question-843/"
+    },
+    {
+        "question_number": 844,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107424-exam-aws-certified-cloud-practitioner-topic-1-question-844/"
+    },
+    {
+        "question_number": 845,
+        "link": "https://www.examtopics.com/discussions/amazon/view/108305-exam-aws-certified-cloud-practitioner-topic-1-question-845/"
+    },
+    {
+        "question_number": 846,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111279-exam-aws-certified-cloud-practitioner-topic-1-question-846/"
+    },
+    {
+        "question_number": 847,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107432-exam-aws-certified-cloud-practitioner-topic-1-question-847/"
+    },
+    {
+        "question_number": 848,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107431-exam-aws-certified-cloud-practitioner-topic-1-question-848/"
+    },
+    {
+        "question_number": 849,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107420-exam-aws-certified-cloud-practitioner-topic-1-question-849/"
+    },
+    {
+        "question_number": 850,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107426-exam-aws-certified-cloud-practitioner-topic-1-question-850/"
+    },
+    {
+        "question_number": 851,
+        "link": "https://www.examtopics.com/discussions/amazon/view/109480-exam-aws-certified-cloud-practitioner-topic-1-question-851/"
+    },
+    {
+        "question_number": 852,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113667-exam-aws-certified-cloud-practitioner-topic-1-question-852/"
+    },
+    {
+        "question_number": 853,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116746-exam-aws-certified-cloud-practitioner-topic-1-question-853/"
+    },
+    {
+        "question_number": 854,
+        "link": "https://www.examtopics.com/discussions/amazon/view/107556-exam-aws-certified-cloud-practitioner-topic-1-question-854/"
+    },
+    {
+        "question_number": 855,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115004-exam-aws-certified-cloud-practitioner-topic-1-question-855/"
+    },
+    {
+        "question_number": 856,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115183-exam-aws-certified-cloud-practitioner-topic-1-question-856/"
+    },
+    {
+        "question_number": 857,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115005-exam-aws-certified-cloud-practitioner-topic-1-question-857/"
+    },
+    {
+        "question_number": 858,
+        "link": "https://www.examtopics.com/discussions/amazon/view/112554-exam-aws-certified-cloud-practitioner-topic-1-question-858/"
+    },
+    {
+        "question_number": 859,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111280-exam-aws-certified-cloud-practitioner-topic-1-question-859/"
+    },
+    {
+        "question_number": 860,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111282-exam-aws-certified-cloud-practitioner-topic-1-question-860/"
+    },
+    {
+        "question_number": 861,
+        "link": "https://www.examtopics.com/discussions/amazon/view/114630-exam-aws-certified-cloud-practitioner-topic-1-question-861/"
+    },
+    {
+        "question_number": 862,
+        "link": "https://www.examtopics.com/discussions/amazon/view/114557-exam-aws-certified-cloud-practitioner-topic-1-question-862/"
+    },
+    {
+        "question_number": 863,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116679-exam-aws-certified-cloud-practitioner-topic-1-question-863/"
+    },
+    {
+        "question_number": 864,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111283-exam-aws-certified-cloud-practitioner-topic-1-question-864/"
+    },
+    {
+        "question_number": 865,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116680-exam-aws-certified-cloud-practitioner-topic-1-question-865/"
+    },
+    {
+        "question_number": 866,
+        "link": "https://www.examtopics.com/discussions/amazon/view/114169-exam-aws-certified-cloud-practitioner-topic-1-question-866/"
+    },
+    {
+        "question_number": 867,
+        "link": "https://www.examtopics.com/discussions/amazon/view/74191-exam-aws-certified-solutions-architect-professional-topic-1/"
+    },
+    {
+        "question_number": 868,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115866-exam-aws-certified-cloud-practitioner-topic-1-question-868/"
+    },
+    {
+        "question_number": 869,
+        "link": "https://www.examtopics.com/discussions/amazon/view/114563-exam-aws-certified-cloud-practitioner-topic-1-question-869/"
+    },
+    {
+        "question_number": 870,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116357-exam-aws-certified-cloud-practitioner-topic-1-question-870/"
+    },
+    {
+        "question_number": 871,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111948-exam-aws-certified-cloud-practitioner-topic-1-question-871/"
+    },
+    {
+        "question_number": 872,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111284-exam-aws-certified-cloud-practitioner-topic-1-question-872/"
+    },
+    {
+        "question_number": 873,
+        "link": "https://www.examtopics.com/discussions/amazon/view/115000-exam-aws-certified-cloud-practitioner-topic-1-question-873/"
+    },
+    {
+        "question_number": 874,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111585-exam-aws-certified-cloud-practitioner-topic-1-question-874/"
+    },
+    {
+        "question_number": 875,
+        "link": "https://www.examtopics.com/discussions/amazon/view/114663-exam-aws-certified-cloud-practitioner-topic-1-question-875/"
+    },
+    {
+        "question_number": 876,
+        "link": "https://www.examtopics.com/discussions/amazon/view/137849-exam-aws-certified-solutions-architect-associate-saa-c03/"
+    },
+    {
+        "question_number": 877,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111684-exam-aws-certified-cloud-practitioner-topic-1-question-877/"
+    },
+    {
+        "question_number": 878,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116359-exam-aws-certified-cloud-practitioner-topic-1-question-878/"
+    },
+    {
+        "question_number": 879,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116360-exam-aws-certified-cloud-practitioner-topic-1-question-879/"
+    },
+    {
+        "question_number": 880,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113674-exam-aws-certified-cloud-practitioner-topic-1-question-880/"
+    },
+    {
+        "question_number": 881,
+        "link": "https://www.examtopics.com/discussions/amazon/429/"
+    },
+    {
+        "question_number": 882,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113878-exam-aws-certified-cloud-practitioner-topic-1-question-882/"
+    },
+    {
+        "question_number": 883,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113877-exam-aws-certified-cloud-practitioner-topic-1-question-883/"
+    },
+    {
+        "question_number": 884,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111685-exam-aws-certified-cloud-practitioner-topic-1-question-884/"
+    },
+    {
+        "question_number": 885,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113876-exam-aws-certified-cloud-practitioner-topic-1-question-885/"
+    },
+    {
+        "question_number": 886,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113875-exam-aws-certified-cloud-practitioner-topic-1-question-886/"
+    },
+    {
+        "question_number": 887,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113874-exam-aws-certified-cloud-practitioner-topic-1-question-887/"
+    },
+    {
+        "question_number": 888,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111286-exam-aws-certified-cloud-practitioner-topic-1-question-888/"
+    },
+    {
+        "question_number": 889,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116077-exam-aws-certified-cloud-practitioner-topic-1-question-889/"
+    },
+    {
+        "question_number": 890,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111287-exam-aws-certified-cloud-practitioner-topic-1-question-890/"
+    },
+    {
+        "question_number": 891,
+        "link": "https://www.examtopics.com/discussions/amazon/415/"
+    },
+    {
+        "question_number": 892,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113678-exam-aws-certified-cloud-practitioner-topic-1-question-892/"
+    },
+    {
+        "question_number": 893,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111289-exam-aws-certified-cloud-practitioner-topic-1-question-893/"
+    },
+    {
+        "question_number": 894,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111290-exam-aws-certified-cloud-practitioner-topic-1-question-894/"
+    },
+    {
+        "question_number": 895,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111291-exam-aws-certified-cloud-practitioner-topic-1-question-895/"
+    },
+    {
+        "question_number": 896,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113870-exam-aws-certified-cloud-practitioner-topic-1-question-896/"
+    },
+    {
+        "question_number": 897,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113869-exam-aws-certified-cloud-practitioner-topic-1-question-897/"
+    },
+    {
+        "question_number": 898,
+        "link": "https://www.examtopics.com/discussions/amazon/view/118369-exam-aws-certified-cloud-practitioner-topic-1-question-898/"
+    },
+    {
+        "question_number": 899,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113868-exam-aws-certified-cloud-practitioner-topic-1-question-899/"
+    },
+    {
+        "question_number": 900,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111292-exam-aws-certified-cloud-practitioner-topic-1-question-900/"
+    },
+    {
+        "question_number": 901,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113867-exam-aws-certified-cloud-practitioner-topic-1-question-901/"
+    },
+    {
+        "question_number": 902,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111355-exam-aws-certified-cloud-practitioner-topic-1-question-902/"
+    },
+    {
+        "question_number": 903,
+        "link": "https://www.examtopics.com/discussions/amazon/view/139857-exam-aws-certified-solutions-architect-associate-saa-c03/"
+    },
+    {
+        "question_number": 904,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113866-exam-aws-certified-cloud-practitioner-topic-1-question-904/"
+    },
+    {
+        "question_number": 905,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113865-exam-aws-certified-cloud-practitioner-topic-1-question-905/"
+    },
+    {
+        "question_number": 906,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111686-exam-aws-certified-cloud-practitioner-topic-1-question-906/"
+    },
+    {
+        "question_number": 907,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111357-exam-aws-certified-cloud-practitioner-topic-1-question-907/"
+    },
+    {
+        "question_number": 908,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111358-exam-aws-certified-cloud-practitioner-topic-1-question-908/"
+    },
+    {
+        "question_number": 909,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113522-exam-aws-certified-cloud-practitioner-topic-1-question-909/"
+    },
+    {
+        "question_number": 910,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111359-exam-aws-certified-cloud-practitioner-topic-1-question-910/"
+    },
+    {
+        "question_number": 911,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113864-exam-aws-certified-cloud-practitioner-topic-1-question-911/"
+    },
+    {
+        "question_number": 912,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111817-exam-aws-certified-cloud-practitioner-topic-1-question-912/"
+    },
+    {
+        "question_number": 913,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111360-exam-aws-certified-cloud-practitioner-topic-1-question-913/"
+    },
+    {
+        "question_number": 914,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113863-exam-aws-certified-cloud-practitioner-topic-1-question-914/"
+    },
+    {
+        "question_number": 915,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113862-exam-aws-certified-cloud-practitioner-topic-1-question-915/"
+    },
+    {
+        "question_number": 916,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111818-exam-aws-certified-cloud-practitioner-topic-1-question-916/"
+    },
+    {
+        "question_number": 917,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111361-exam-aws-certified-cloud-practitioner-topic-1-question-917/"
+    },
+    {
+        "question_number": 918,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111362-exam-aws-certified-cloud-practitioner-topic-1-question-918/"
+    },
+    {
+        "question_number": 919,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113856-exam-aws-certified-cloud-practitioner-topic-1-question-919/"
+    },
+    {
+        "question_number": 920,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113855-exam-aws-certified-cloud-practitioner-topic-1-question-920/"
+    },
+    {
+        "question_number": 921,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111363-exam-aws-certified-cloud-practitioner-topic-1-question-921/"
+    },
+    {
+        "question_number": 922,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111364-exam-aws-certified-cloud-practitioner-topic-1-question-922/"
+    },
+    {
+        "question_number": 923,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113186-exam-aws-certified-cloud-practitioner-topic-1-question-923/"
+    },
+    {
+        "question_number": 924,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111819-exam-aws-certified-cloud-practitioner-topic-1-question-924/"
+    },
+    {
+        "question_number": 925,
+        "link": "https://www.examtopics.com/discussions/amazon/view/114897-exam-aws-certified-cloud-practitioner-topic-1-question-925/"
+    },
+    {
+        "question_number": 926,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113854-exam-aws-certified-cloud-practitioner-topic-1-question-926/"
+    },
+    {
+        "question_number": 927,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113853-exam-aws-certified-cloud-practitioner-topic-1-question-927/"
+    },
+    {
+        "question_number": 928,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111365-exam-aws-certified-cloud-practitioner-topic-1-question-928/"
+    },
+    {
+        "question_number": 929,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111366-exam-aws-certified-cloud-practitioner-topic-1-question-929/"
+    },
+    {
+        "question_number": 930,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113852-exam-aws-certified-cloud-practitioner-topic-1-question-930/"
+    },
+    {
+        "question_number": 931,
+        "link": "https://www.examtopics.com/discussions/amazon/view/112480-exam-aws-certified-cloud-practitioner-topic-1-question-931/"
+    },
+    {
+        "question_number": 932,
+        "link": "https://www.examtopics.com/discussions/amazon/view/112155-exam-aws-certified-cloud-practitioner-topic-1-question-932/"
+    },
+    {
+        "question_number": 933,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111955-exam-aws-certified-cloud-practitioner-topic-1-question-933/"
+    },
+    {
+        "question_number": 934,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111304-exam-aws-certified-cloud-practitioner-topic-1-question-934/"
+    },
+    {
+        "question_number": 935,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111303-exam-aws-certified-cloud-practitioner-topic-1-question-935/"
+    },
+    {
+        "question_number": 936,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111367-exam-aws-certified-cloud-practitioner-topic-1-question-936/"
+    },
+    {
+        "question_number": 937,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113694-exam-aws-certified-cloud-practitioner-topic-1-question-937/"
+    },
+    {
+        "question_number": 938,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113693-exam-aws-certified-cloud-practitioner-topic-1-question-938/"
+    },
+    {
+        "question_number": 939,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113520-exam-aws-certified-cloud-practitioner-topic-1-question-939/"
+    },
+    {
+        "question_number": 940,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111369-exam-aws-certified-cloud-practitioner-topic-1-question-940/"
+    },
+    {
+        "question_number": 941,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111300-exam-aws-certified-cloud-practitioner-topic-1-question-941/"
+    },
+    {
+        "question_number": 942,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111299-exam-aws-certified-cloud-practitioner-topic-1-question-942/"
+    },
+    {
+        "question_number": 943,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113519-exam-aws-certified-cloud-practitioner-topic-1-question-943/"
+    },
+    {
+        "question_number": 944,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111370-exam-aws-certified-cloud-practitioner-topic-1-question-944/"
+    },
+    {
+        "question_number": 945,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113690-exam-aws-certified-cloud-practitioner-topic-1-question-945/"
+    },
+    {
+        "question_number": 946,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111369-exam-aws-certified-cloud-practitioner-topic-1-question-940/"
+    },
+    {
+        "question_number": 947,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111371-exam-aws-certified-cloud-practitioner-topic-1-question-947/"
+    },
+    {
+        "question_number": 948,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113689-exam-aws-certified-cloud-practitioner-topic-1-question-948/"
+    },
+    {
+        "question_number": 949,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113688-exam-aws-certified-cloud-practitioner-topic-1-question-949/"
+    },
+    {
+        "question_number": 950,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113646-exam-aws-certified-cloud-practitioner-topic-1-question-950/"
+    },
+    {
+        "question_number": 951,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113645-exam-aws-certified-cloud-practitioner-topic-1-question-951/"
+    },
+    {
+        "question_number": 952,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113644-exam-aws-certified-cloud-practitioner-topic-1-question-952/"
+    },
+    {
+        "question_number": 953,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113643-exam-aws-certified-cloud-practitioner-topic-1-question-953/"
+    },
+    {
+        "question_number": 954,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113642-exam-aws-certified-cloud-practitioner-topic-1-question-954/"
+    },
+    {
+        "question_number": 955,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111374-exam-aws-certified-cloud-practitioner-topic-1-question-955/"
+    },
+    {
+        "question_number": 956,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113636-exam-aws-certified-cloud-practitioner-topic-1-question-956/"
+    },
+    {
+        "question_number": 957,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113635-exam-aws-certified-cloud-practitioner-topic-1-question-957/"
+    },
+    {
+        "question_number": 958,
+        "link": "https://www.examtopics.com/discussions/amazon/view/112483-exam-aws-certified-cloud-practitioner-topic-1-question-958/"
+    },
+    {
+        "question_number": 959,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111375-exam-aws-certified-cloud-practitioner-topic-1-question-959/"
+    },
+    {
+        "question_number": 960,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113030-exam-aws-certified-cloud-practitioner-topic-1-question-960/"
+    },
+    {
+        "question_number": 961,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111376-exam-aws-certified-cloud-practitioner-topic-1-question-961/"
+    },
+    {
+        "question_number": 962,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113515-exam-aws-certified-cloud-practitioner-topic-1-question-962/"
+    },
+    {
+        "question_number": 963,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116679-exam-aws-certified-cloud-practitioner-topic-1-question-863/"
+    },
+    {
+        "question_number": 964,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111293-exam-aws-certified-cloud-practitioner-topic-1-question-964/"
+    },
+    {
+        "question_number": 965,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113629-exam-aws-certified-cloud-practitioner-topic-1-question-965/"
+    },
+    {
+        "question_number": 966,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111281-exam-aws-certified-cloud-practitioner-topic-1-question-966/"
+    },
+    {
+        "question_number": 967,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111277-exam-aws-certified-cloud-practitioner-topic-1-question-967/"
+    },
+    {
+        "question_number": 968,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113614-exam-aws-certified-cloud-practitioner-topic-1-question-968/"
+    },
+    {
+        "question_number": 969,
+        "link": "https://www.examtopics.com/discussions/amazon/view/89411-exam-aws-certified-solutions-architect-professional-topic-1/"
+    },
+    {
+        "question_number": 970,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111378-exam-aws-certified-cloud-practitioner-topic-1-question-970/"
+    },
+    {
+        "question_number": 971,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111603-exam-aws-certified-cloud-practitioner-topic-1-question-971/"
+    },
+    {
+        "question_number": 972,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113513-exam-aws-certified-cloud-practitioner-topic-1-question-972/"
+    },
+    {
+        "question_number": 973,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111379-exam-aws-certified-cloud-practitioner-topic-1-question-973/"
+    },
+    {
+        "question_number": 974,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113028-exam-aws-certified-cloud-practitioner-topic-1-question-974/"
+    },
+    {
+        "question_number": 975,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113576-exam-aws-certified-cloud-practitioner-topic-1-question-975/"
+    },
+    {
+        "question_number": 976,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113575-exam-aws-certified-cloud-practitioner-topic-1-question-976/"
+    },
+    {
+        "question_number": 977,
+        "link": "https://www.examtopics.com/discussions/amazon/393/"
+    },
+    {
+        "question_number": 978,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113571-exam-aws-certified-cloud-practitioner-topic-1-question-978/"
+    },
+    {
+        "question_number": 979,
+        "link": "https://www.examtopics.com/discussions/amazon/420/"
+    },
+    {
+        "question_number": 980,
+        "link": "https://www.examtopics.com/discussions/amazon/view/112877-exam-aws-certified-cloud-practitioner-topic-1-question-980/"
+    },
+    {
+        "question_number": 981,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116067-exam-aws-certified-cloud-practitioner-topic-1-question-987/"
+    },
+    {
+        "question_number": 982,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113629-exam-aws-certified-cloud-practitioner-topic-1-question-965/"
+    },
+    {
+        "question_number": 983,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113468-exam-aws-certified-cloud-practitioner-topic-1-question-983/"
+    },
+    {
+        "question_number": 984,
+        "link": "https://www.examtopics.com/discussions/amazon/view/91774-exam-aws-certified-solutions-architect-professional-topic-1/"
+    },
+    {
+        "question_number": 985,
+        "link": "https://www.examtopics.com/discussions/amazon/view/112878-exam-aws-certified-cloud-practitioner-topic-1-question-985/"
+    },
+    {
+        "question_number": 986,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113459-exam-aws-certified-cloud-practitioner-topic-1-question-986/"
+    },
+    {
+        "question_number": 987,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116067-exam-aws-certified-cloud-practitioner-topic-1-question-987/"
+    },
+    {
+        "question_number": 988,
+        "link": "https://www.examtopics.com/discussions/amazon/view/116074-exam-aws-certified-cloud-practitioner-topic-1-question-988/"
+    },
+    
+    {
+        "question_number": 989,
+        "link": "https://www.examtopics.com/discussions/amazon/view/95043-exam-aws-certified-solutions-architect-professional-topic-1/"
+    },
+    {
+        "question_number": 990,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111292-exam-aws-certified-cloud-practitioner-topic-1-question-900/"
+    },
+    {
+        "question_number": 991,
+        "link": "https://www.examtopics.com/discussions/amazon/view/113864-exam-aws-certified-cloud-practitioner-topic-1-question-911/"
+    },
+    {
+        "question_number": 992,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111364-exam-aws-certified-cloud-practitioner-topic-1-question-922/"
+    },
+    {
+        "question_number": 993,
+        "link": "https://www.examtopics.com/discussions/amazon/view/88469-exam-aws-certified-solutions-architect-professional-topic-1/"
+    },
+    {
+        "question_number": 994,
+        "link": "https://www.examtopics.com/exams/amazon/aws-certified-cloud-practitioner/"
+    },
+    {
+        "question_number": 995,
+        "link": "https://www.examtopics.com/discussions/amazon/view/111374-exam-aws-certified-cloud-practitioner-topic-1-question-955/"
+    },
+    {
+        "question_number": 996,
+        "link": "https://www.examtopics.com/discussions/amazon/view/43967-exam-aws-certified-cloud-practitioner-topic-1-question-150/"
+    },
+    {
+        "question_number": 997,
+        "link": "https://www.examtopics.com/discussions/amazon/view/125700-exam-aws-certified-cloud-practitioner-clf-c02-topic-1/"
+    },
+    {
+        "question_number": 998,
+        "link": "https://www.examtopics.com/discussions/amazon/view/148806-exam-aws-certified-solutions-architect-associate-saa-c03/"
+    }
+];
+
+        const questionGrid = document.getElementById('questionGrid');
+        const clearButton = document.getElementById('clearButton');
+
+        // Load clicked questions from localStorage
+        const clickedQuestions = JSON.parse(localStorage.getItem('clickedQuestions')) || [];
+
+        // Function to create question boxes
+        function createQuestionBoxes() {
+            data.forEach(item => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.textContent = item.question_number;
+                if (clickedQuestions.includes(item.question_number)) {
+                    questionDiv.classList.add('clicked');
+                }
+
+                // Add click event to open the link in a new tab
+                questionDiv.addEventListener('click', () => {
+                    window.open(item.link, '_blank');
+                    if (!clickedQuestions.includes(item.question_number)) {
+                        clickedQuestions.push(item.question_number);
+                        localStorage.setItem('clickedQuestions', JSON.stringify(clickedQuestions));
+                        questionDiv.classList.add('clicked');
+                    }
+                });
+
+                questionGrid.appendChild(questionDiv);
+            });
+        }
+
+        // Clear all data from localStorage and reset the grid
+        clearButton.addEventListener('click', () => {
+            localStorage.removeItem('clickedQuestions');
+            const allQuestions = document.querySelectorAll('.question');
+            allQuestions.forEach(question => question.classList.remove('clicked'));
+            clickedQuestions.length = 0;
+        });
+
+        // Initialize the page
+        createQuestionBoxes();
+    </script>
+</body>
+</html>
